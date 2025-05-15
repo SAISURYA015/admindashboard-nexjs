@@ -7,7 +7,7 @@ import {PiUsersFourLight} from 'react-icons/pi'
 import Link from 'next/link';
 import { useContext } from 'react';
 import { GlobalContext } from '@/context';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 
 const menuItems = [
@@ -35,7 +35,12 @@ export default function Sidebar() {
 
   const {sideBarOpen, setSideBarOpen} = useContext(GlobalContext);
 
-  const pathName = usePathname()
+  const pathName = usePathname();
+  const router = useRouter()
+
+  const handleNavigate = (getMenuItem) => {
+    router.push(getMenuItem.path)
+  }
 
   return (
     <>
@@ -53,7 +58,9 @@ export default function Sidebar() {
                 <ul className="mb-6 flex flex-col gap-1.5">
                   {
                     menuItems.map(menuItem => <li key={menuItem.id}>
-                      <label className={`group relative cursor-pointer flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-white duration-300 ease-in-out hover:bg-gray-800
+                      <label 
+                      onClick={() => handleNavigate(menuItem)}
+                      className={`group relative cursor-pointer flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-white duration-300 ease-in-out hover:bg-gray-800
                         ${pathName.includes(menuItem.id) && "bg-gray-700"}
                       `}>
                         {menuItem.icon}
